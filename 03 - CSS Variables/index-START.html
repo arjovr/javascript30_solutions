@@ -9,18 +9,24 @@
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
-    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-suffix="px">
 
     <label for="blur">Blur:</label>
-    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-suffix="px">
 
     <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
+    <input id="base" type="color" name="base-color" value="#ffc600">
   </div>
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+
+    :root {
+      --base-color: #ffc600;
+      --blur: 10px;
+      --spacing: 10px;
+    }
 
     /*
       misc styles, nothing to do with CSS variables
@@ -42,9 +48,34 @@
     input {
       width: 100px;
     }
+
+    img {
+      background-color: var(--base-color);
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base-color);
+    }
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+
+    inputs.forEach((input) => {
+      input.addEventListener('input', handler);
+    });
+
+    function handler(e) {
+      const suffix = e.target.dataset.suffix || '';
+      const name = e.target.name;
+      const value = e.target.value;
+
+      document.documentElement.style.setProperty(`--${name}`, `${value}${suffix}`);
+    }
+
+
   </script>
 
 </body>
