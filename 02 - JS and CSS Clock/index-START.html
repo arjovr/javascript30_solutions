@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
 </head>
+
 <body>
 
 
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
     </div>
+  </div>
 
 
   <style>
@@ -43,17 +45,18 @@
       position: relative;
       padding: 2rem;
       box-shadow:
-        0 0 0 4px rgba(0,0,0,0.1),
+        0 0 0 4px rgba(0, 0, 0, 0.1),
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
-        0 0 10px rgba(0,0,0,0.2);
+        0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .clock-face {
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
     }
 
     .hand {
@@ -62,13 +65,78 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 4.0, 0.58, 1);
     }
 
+    .hour-hand {
+      width: 30%;
+      left: 20%;
+      transform: rotate(0deg);
+    }
+
+    .min-hand {
+      width: 40%;
+      transform: rotate(45deg);
+      left: 10%;
+    }
+
+    .no-transition.no-transition {
+      transition: all 0s;
+    }
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
 
+
+    function handler() {
+      const now = new Date();
+
+      const seconds = now.getSeconds();
+      if (seconds == 0) {
+        secondHand.classList.add('no-transition');
+      }
+      secondHand.style.transform = `rotate(${seconds * 6 + 90}deg)`;
+      if (seconds == 0) {
+        setTimeout(() => {
+          secondHand.classList.remove('no-transition');
+        }, 0.5);
+      }
+
+      const minutes = now.getMinutes();
+      if (minutes == 0) {
+        minuteHand.classList.add('no-transition');
+      }
+      minuteHand.style.transform = `rotate(${minutes * 6 + 90}deg)`;
+      if (minutes == 0) {
+        setTimeout(() => {
+          minuteHand.classList.remove('no-transition');
+        }, 0.5);
+      }
+
+      const hours = now.getHours();
+      if (hours == 0) {
+        hourHand.classList.add('no-transition');
+      }
+      hourHand.style.transform = `rotate(${hours * 30 + 90}deg)`;
+      if (hours == 0) {
+        setTimeout(() => {
+          hourHand.classList.remove('no-transition');
+        }, 0.5);
+      }
+
+
+    }
+
+
+    setInterval(handler, 1000);
 
   </script>
 </body>
+
 </html>
